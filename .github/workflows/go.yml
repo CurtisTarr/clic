@@ -21,6 +21,9 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
+    
+    - name: Open internal package
+      run: cd internal
 
     - name: Get dependencies
       run: |
@@ -29,9 +32,6 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
-
-    - name: Build
-      run: go build -v .
     
     - name: Test
-      run: go test -v .
+      run: go test -v ./...
