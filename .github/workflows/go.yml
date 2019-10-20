@@ -22,8 +22,8 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
     
-    - name: Open internal package
-      run: cd internal
+    - name: Open src package
+      run: cd src
 
     - name: Get dependencies
       run: |
@@ -33,5 +33,8 @@ jobs:
             dep ensure
         fi
     
+    - name: Open internal package
+      run: cd internal
+    
     - name: Test
-      run: go test -v ./...
+      run: go test ./... -v -cover
