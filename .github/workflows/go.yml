@@ -23,4 +23,4 @@ jobs:
       uses: actions/checkout@v1
     
     - name: Test
-      run: go test ./internal/... -v -cover
+      run: go test ./src/internal/... -v -cover
