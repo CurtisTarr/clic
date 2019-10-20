@@ -1,4 +1,4 @@
-name: Go
+name: Go Unit Test
 on:
   push:
     branches: 
@@ -23,4 +23,4 @@ jobs:
       uses: actions/checkout@v1
     
     - name: Test
-      run: go test ./src/internal/... -v -cover
+      run: GOPATH=$HOME/work/clic/clic/; cd src/internal; go test ./... -v -cover
