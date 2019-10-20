@@ -23,4 +23,4 @@ jobs:
       uses: actions/checkout@v1
     
     - name: Test
-      run: GOPATH=$HOME/work/clic/clic/; cd src/internal; go test ./... -v -cover
+      run: export GOPATH=$HOME/work/clic/clic/; cd src/internal; go test ./... -v -cover
