@@ -7,28 +7,36 @@ import (
 	"strings"
 )
 
-// ToDo - error checking and handling long numbers and decimals
-
-// Tokenize extracts all of the Tokens from the input string
-func Tokenize(input string) []*Token {
+func Tokenize(input string) (tokens []*Token, err error) {
 	var cleanedInput = cleanInput(input)
 	var tokenValues = getTokenValues(cleanedInput)
+	var literalStr = ""
 
-	var tokens []*Token
 	for i, value := range tokenValues {
-		if isLiteral(value) {
-			tokens = append(tokens, NewToken(Literal, value))
-		} else if isOperator(value) {
-			tokens = append(tokens, NewToken(Operator, value))
-		} else if isOpeningBrace(value) {
-			tokens = append(tokens, NewToken(OpeningBrace, value))
-		} else if isClosingBrace(value) {
-			tokens = append(tokens, NewToken(ClosingBrace, value))
+		if isLiteral(value) || isDecimal(value) {
+			literalStr += value
 		} else {
-			fmt.Printf("Unkown token detected [%s] at location [%d]", value, i)
+			if literalStr != "" {
+				tokens = append(tokens, NewToken(Literal, literalStr))
+				literalStr = ""
+			}
+
+			if isOperator(value) {
+				tokens = append(tokens, NewToken(Operator, value))
+			} else if isOpeningBrace(value) {
+				tokens = append(tokens, NewToken(OpeningBrace, value))
+			} else if isClosingBrace(value) {
+				tokens = append(tokens, NewToken(ClosingBrace, value))
+			} else {
+				return nil, fmt.Errorf("unknown token detected [%s] at location [%d]", value, i)
+			}
 		}
 	}
-	return tokens
+
+	if literalStr != "" {
+		tokens = append(tokens, NewToken(Literal, literalStr))
+	}
+	return tokens, nil
 }
 
 func cleanInput(input string) string {
@@ -44,8 +52,12 @@ func isLiteral(token string) bool {
 	return err == nil
 }
 
+func isDecimal(token string) bool {
+	return token == "."
+}
+
 func isOperator(token string) bool {
-	var operator, _ = regexp.Compile(`\+|-|\*|/`)
+	var operator, _ = regexp.Compile(`[+\-*/^]`)
 	return operator.MatchString(token)
 }
 

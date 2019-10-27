@@ -4,7 +4,6 @@ import (
 	"internal/parser"
 )
 
-// Compile compiles the nodes from the parser and returns the output
-func Compile(operations []parser.Node) float64 {
-	return 10.
+func Compile(operations []parser.Node) string {
+	return ""
 }

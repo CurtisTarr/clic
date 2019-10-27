@@ -1,27 +1,42 @@
 package tokenizer
 
-// Literal constant for the literal Token type
 const Literal string = "literal"
-
-// Operator constant for the operator Token type
 const Operator string = "operator"
-
-// OpeningBrace constant for the openingBrace Token type
 const OpeningBrace string = "openingBrace"
-
-// ClosingBrace constant for the closingBrace Token type
 const ClosingBrace string = "closingBrace"
 
-// Token object that store the tokenType and its value
-type Token struct {
-	tokenType string
-	value     string
+var assoc = map[string] string{
+	"^" : "right",
+	"*" : "left",
+	"/" : "left",
+	"+" : "left",
+	"-" : "left",
 }
 
-// NewToken constructor for Token object
+var prec = map[string] int{
+	"^" : 4,
+	"*" : 3,
+	"/" : 3,
+	"+" : 2,
+	"-" : 2,
+}
+
+type Token struct {
+	TokenType string
+	Value     string
+}
+
 func NewToken(tokenType string, value string) *Token {
 	token := new(Token)
-	token.tokenType = tokenType
-	token.value = value
+	token.TokenType = tokenType
+	token.Value = value
 	return token
+}
+
+func GetAssoc(t *Token) string {
+	return assoc[t.Value]
+}
+
+func GetPrec(t *Token) int {
+	return prec[t.Value]
 }

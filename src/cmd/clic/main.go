@@ -1,26 +1,25 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"internal/compiler"
-	"internal/parser"
-	"internal/tokenizer"
-	"strconv"
+	"internal/calculator"
+	"os"
 )
 
 func main() {
 	fmt.Print("Welcome to clic! Enter a math equation (q quits): \n")
 	var running bool = true
 	for running {
-		var input string
-		fmt.Scanln(&input)
+		reader := bufio.NewReader(os.Stdin)
+		input, _ := reader.ReadString('\n')
+
 		if input == "q" {
 			running = false
 			break
 		}
-		var tokens = tokenizer.Tokenize(input)
-		var operations = parser.Parse(tokens)
-		var output = compiler.Compile(operations)
-		fmt.Println(strconv.ParseFloat(output) + "\n")
+
+		var output = calculator.Calculate(input)
+		fmt.Printf("%s \n", output)
 	}
 }
