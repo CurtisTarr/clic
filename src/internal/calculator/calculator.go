@@ -1,7 +1,6 @@
 package calculator
 
 import (
-	"internal/compiler"
 	"internal/parser"
 	"internal/tokenizer"
 )
@@ -12,5 +11,7 @@ func Calculate(input string) string {
 		return err.Error()
 	}
 	var operations = parser.Parse(tokens)
-	return compiler.Compile(operations)
+
+	return operations
+	//return compiler.Compile(operations)
 }
