@@ -17,13 +17,19 @@ func TestSimpleLiteral(t *testing.T) {
 }
 
 func TestOperators(t *testing.T) {
-	var input = "+-*/^"
+	var input = "1+2-3*4/5^6"
 	var expectedTokens []*Token
+	expectedTokens = append(expectedTokens, NewToken(Literal, "1"))
 	expectedTokens = append(expectedTokens, NewToken(Operator, "+"))
+	expectedTokens = append(expectedTokens, NewToken(Literal, "2"))
 	expectedTokens = append(expectedTokens, NewToken(Operator, "-"))
+	expectedTokens = append(expectedTokens, NewToken(Literal, "3"))
 	expectedTokens = append(expectedTokens, NewToken(Operator, "*"))
+	expectedTokens = append(expectedTokens, NewToken(Literal, "4"))
 	expectedTokens = append(expectedTokens, NewToken(Operator, "/"))
+	expectedTokens = append(expectedTokens, NewToken(Literal, "5"))
 	expectedTokens = append(expectedTokens, NewToken(Operator, "^"))
+	expectedTokens = append(expectedTokens, NewToken(Literal, "6"))
 
 	var tokens, err = Tokenize(input)
 
