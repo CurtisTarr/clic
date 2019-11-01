@@ -4,7 +4,8 @@ import (
 	"internal/tokenizer"
 )
 
-func Parse(tokens []*tokenizer.Token) (out string) {
+func Parse(tokens []*tokenizer.Token) *Node {
+	var queue []*Node
 	var stack []*tokenizer.Token
 	for _, token := range tokens {
 		switch token.TokenType {
@@ -18,7 +19,7 @@ func Parse(tokens []*tokenizer.Token) (out string) {
 					if topToken.TokenType == tokenizer.OpeningBrace {
 						break
 					}
-					out += " " + topToken.Value
+					queue = appendNodeToQueue(queue, topToken)
 				} else {
 					break
 				}
@@ -31,24 +32,38 @@ func Parse(tokens []*tokenizer.Token) (out string) {
 						(tokenizer.GetPrec(token) == tokenizer.GetPrec(topToken) &&
 							tokenizer.GetAssoc(topToken) == "left")) {
 					stack = popStack(stack)
-					out += " " + topToken.Value
+					queue = appendNodeToQueue(queue, topToken)
 				} else {
 					break
 				}
 			}
 			stack = append(stack, token)
 		default:
-			if out != "" {
-				out += " "
-			}
-			out += token.Value
+			queue = append(queue, NewNode(token.Value, nil, nil))
 		}
 	}
 	for len(stack) > 0 {
-		out += " " + stack[len(stack)-1].Value
+		queue = appendNodeToQueue(queue, stack[len(stack)-1])
 		stack = popStack(stack)
 	}
-	return
+	return queue[len(queue)-1]
+}
+
+func appendNodeToQueue(queue []*Node, token *tokenizer.Token) []*Node {
+	var rightNode *Node
+	var leftNode *Node
+	leftNode, queue = queue[len(queue)-1], popQueue(queue)
+	rightNode, queue = queue[len(queue)-1], popQueue(queue)
+
+	var newNode = NewNode(token.Value, leftNode, rightNode)
+	return append(queue, newNode)
+}
+
+func popQueue(queue []*Node) []*Node {
+	if len(queue) > 0 {
+		return queue[:len(queue)-1]
+	}
+	return queue
 }
 
 func popStack(stack []*tokenizer.Token) []*tokenizer.Token {

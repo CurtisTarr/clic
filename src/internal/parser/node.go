@@ -1,15 +1,15 @@
 package parser
 
 type Node struct {
-	value     string
-	leftNode  *Node
-	rightNode *Node
+	Value     string
+	LeftNode  *Node
+	RightNode *Node
 }
 
-func NewNode(value string, rightNode *Node, leftNode *Node) *Node {
+func NewNode(value string, leftNode *Node, rightNode *Node) *Node {
 	node := new(Node)
-	node.value = value
-	node.leftNode = leftNode
-	node.rightNode = rightNode
+	node.Value = value
+	node.LeftNode = leftNode
+	node.RightNode = rightNode
 	return node
 }

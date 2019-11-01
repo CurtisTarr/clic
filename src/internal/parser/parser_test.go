@@ -24,9 +24,22 @@ func TestCase1(t *testing.T) {
 	tokens = append(tokens, tokenizer.NewToken(tokenizer.Operator, "^"))
 	tokens = append(tokens, tokenizer.NewToken(tokenizer.Literal, "3"))
 
+	var expectedOutput = NewNode("+",
+		NewNode("/",
+			NewNode("^",
+				NewNode("^",
+					NewNode("3", nil, nil),
+					NewNode("2", nil, nil)),
+				NewNode("-",
+					NewNode("5", nil, nil),
+					NewNode("1", nil, nil))),
+			NewNode("*",
+				NewNode("2", nil, nil),
+				NewNode("4", nil, nil))),
+		NewNode("3", nil, nil))
 	var output = Parse(tokens)
 
-	assert.Equal(t, output, "3 4 2 * 1 5 - 2 3 ^ ^ / +")
+	assert.DeepEqual(t, output, expectedOutput)
 }
 
 func TestCase2(t *testing.T) {
@@ -41,7 +54,14 @@ func TestCase2(t *testing.T) {
 	tokens = append(tokens, tokenizer.NewToken(tokenizer.Literal, "3"))
 	tokens = append(tokens, tokenizer.NewToken(tokenizer.ClosingBrace, ")"))
 
+	var expectedOutput = NewNode("+",
+		NewNode("/",
+			NewNode("-",
+				NewNode("3", nil, nil),
+				NewNode("9", nil, nil)),
+			NewNode("18", nil, nil)),
+		NewNode("4", nil, nil))
 	var output = Parse(tokens)
 
-	assert.Equal(t, output, "4 18 9 3 - / +")
+	assert.DeepEqual(t, output, expectedOutput)
 }
