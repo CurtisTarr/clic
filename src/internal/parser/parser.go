@@ -52,8 +52,8 @@ func Parse(tokens []*tokenizer.Token) *Node {
 func appendNodeToQueue(queue []*Node, token *tokenizer.Token) []*Node {
 	var rightNode *Node
 	var leftNode *Node
-	leftNode, queue = queue[len(queue)-1], popQueue(queue)
 	rightNode, queue = queue[len(queue)-1], popQueue(queue)
+	leftNode, queue = queue[len(queue)-1], popQueue(queue)
 
 	var newNode = NewNode(token.Value, leftNode, rightNode)
 	return append(queue, newNode)

@@ -25,18 +25,18 @@ func TestCase1(t *testing.T) {
 	tokens = append(tokens, tokenizer.NewToken(tokenizer.Literal, "3"))
 
 	var expectedOutput = NewNode("+",
+		NewNode("3", nil, nil),
 		NewNode("/",
-			NewNode("^",
-				NewNode("^",
-					NewNode("3", nil, nil),
-					NewNode("2", nil, nil)),
-				NewNode("-",
-					NewNode("5", nil, nil),
-					NewNode("1", nil, nil))),
 			NewNode("*",
-				NewNode("2", nil, nil),
-				NewNode("4", nil, nil))),
-		NewNode("3", nil, nil))
+				NewNode("4", nil, nil),
+				NewNode("2", nil, nil)),
+			NewNode("^",
+				NewNode("-",
+					NewNode("1", nil, nil),
+					NewNode("5", nil, nil)),
+				NewNode("^",
+					NewNode("2", nil, nil),
+					NewNode("3", nil, nil)))))
 	var output = Parse(tokens)
 
 	assert.DeepEqual(t, output, expectedOutput)
@@ -55,12 +55,12 @@ func TestCase2(t *testing.T) {
 	tokens = append(tokens, tokenizer.NewToken(tokenizer.ClosingBrace, ")"))
 
 	var expectedOutput = NewNode("+",
+		NewNode("4", nil, nil),
 		NewNode("/",
+			NewNode("18", nil, nil),
 			NewNode("-",
-				NewNode("3", nil, nil),
-				NewNode("9", nil, nil)),
-			NewNode("18", nil, nil)),
-		NewNode("4", nil, nil))
+				NewNode("9", nil, nil),
+				NewNode("3", nil, nil))))
 	var output = Parse(tokens)
 
 	assert.DeepEqual(t, output, expectedOutput)
