@@ -7,6 +7,12 @@ import (
 )
 
 func Calculate(input string) string {
+	defer func() {
+		if err := recover(); err != nil {
+			println("Something went wrong, please check your expression")
+		}
+	}()
+
 	var tokens, err = tokenizer.Tokenize(input)
 	if err != nil {
 		return err.Error()

@@ -21,7 +21,9 @@ func Tokenize(input string) (tokens []*Token, err error) {
 				literalStr = ""
 			}
 
-			if isOperator(value) {
+			if isNegativeNotation(value, tokens) {
+				literalStr += value
+			} else if isOperator(value) {
 				tokens = append(tokens, NewToken(Operator, value))
 			} else if isOpeningBrace(value) {
 				tokens = append(tokens, NewToken(OpeningBrace, value))
@@ -67,4 +69,8 @@ func isOpeningBrace(token string) bool {
 
 func isClosingBrace(token string) bool {
 	return token == ")"
+}
+
+func isNegativeNotation(token string, tokens []*Token) bool {
+	return token == "-" && (len(tokens) == 0 || (isOperator(tokens[len(tokens)-1].Value) || isOpeningBrace(tokens[len(tokens)-1].Value)))
 }

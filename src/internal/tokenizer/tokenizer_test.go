@@ -107,3 +107,29 @@ func TestUnknownValues(t *testing.T) {
 
 	assert.Equal(t, err.Error(), "unknown token detected [a] at location [4]")
 }
+
+func TestNegativeLiteral(t *testing.T) {
+	var input = "-3"
+	var expectedTokens []*Token
+	expectedTokens = append(expectedTokens, NewToken(Literal, "-3"))
+
+	var tokens, err = Tokenize(input)
+
+	assert.DeepEqual(t, tokens, expectedTokens)
+	assert.Equal(t, err, nil)
+}
+
+func TestDeepNegativeLiteral(t *testing.T) {
+	var input = "4 + 2 - -3"
+	var expectedTokens []*Token
+	expectedTokens = append(expectedTokens, NewToken(Literal, "4"))
+	expectedTokens = append(expectedTokens, NewToken(Operator, "+"))
+	expectedTokens = append(expectedTokens, NewToken(Literal, "2"))
+	expectedTokens = append(expectedTokens, NewToken(Operator, "-"))
+	expectedTokens = append(expectedTokens, NewToken(Literal, "-3"))
+
+	var tokens, err = Tokenize(input)
+
+	assert.DeepEqual(t, tokens, expectedTokens)
+	assert.Equal(t, err, nil)
+}
