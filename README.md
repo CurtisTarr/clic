@@ -8,7 +8,7 @@ CLIC (Command Line Interface Calculator)
 
 ## Running
 
-Run `main.go` and enter in any support mathmatical expression.
+Run `main.go` and enter in any supported mathematical expression.
 
 Supported operators are:
 - `^` raising to the power

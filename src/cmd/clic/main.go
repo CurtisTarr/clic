@@ -10,7 +10,7 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Welcome to clic! Enter a math equation (q quits): \n")
+	println("Welcome to clic! Enter a math equation (q quits):")
 
 	var running bool = true
 	for running {
